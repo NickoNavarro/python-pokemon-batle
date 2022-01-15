@@ -1,0 +1,456 @@
+import time
+from pygame import *
+import sys
+
+media = vlc.MediaPlayer("pokemon.mp3")
+
+class batalla():
+
+    def __init__(self,pokemon1,pokemon2):
+        self.pokemon1 = pokemon1
+        self.pokemon2 = pokemon2
+
+
+    def batalla_terminada(self):
+        acabada = self.pokemon1.estadisticas["vida"] <= 0 or self.pokemon2.estadisticas["vida"] <= 0
+        if acabada:
+            self.victoria()
+            
+
+        return acabada
+
+
+    def golpear(self,pokemon1,pokemon2):
+
+            self.pokemon1.vida -=self.pokemon2.ataque
+            self.pokemon2.vida -=self.pokemon1.ataque
+
+           
+
+    def estado (self):
+        print()
+
+        print("le quedan",self.pokemon1.vida,"de vida a",self.pokemon1.nombre)
+        print("le quedan",self.pokemon2.vida,"de vida a",self.pokemon2.nombre)
+        
+
+
+    def victoria (self):
+
+        if self.pokemon1.estadisticas["vida"] <= 0:
+            print(self.pokemon2.nombre,"ganó")
+
+
+
+        elif self.pokemon2.estadisticas["vida"] <= 0:
+            print(self.pokemon1.nombre,"ganó")
+
+        else:
+            print("Hay un K.O tecnico")
+
+
+class pokemon ():
+
+    def __init__(self,nombre,tipo,nivel,vida,ataque,corriente):
+        self.nombre = nombre
+        self.tipo = tipo
+        self.nivel = nivel
+        self.vida = vida
+        self.ev = {}
+        self.iv = {}
+        self.estadisticasbase = {}
+        self.estadisticas = {}
+        self.renderer = None
+        self.ataques = []
+        self.ataque = ataque
+        self.corriente = corriente
+
+
+    
+    
+        
+        
+class mochila ():
+    def __init__(self,nombre,descripcion,imagen,tipo,numero = 0):
+        self.numero = numero
+        self.nombre = nombre
+        self.descripcion = descipcion
+        self.imagen = imagen
+        self.tipo = tipo
+
+
+    def obtener(self):
+        self.numero+=1
+
+pokemon1 =pokemon("Articuno","planta",78,39,20,39)
+pokemon2 =pokemon("Abra","fuego",100,45,10,45)
+
+
+
+pokemon1.estadisticasbase = {
+    "vida" : 108,
+    "ATAQUE": 130,
+    "DEFENSA": 95,
+    "ATAQUE_ESP": 80,
+    "DEFENSA_ESP": 85,
+    "VELOCIDAD": 102
+}
+
+pokemon1.ev = {
+    "vida": 74,
+    "ATAQUE": 190,
+    "DEFENSA": 91,
+    "ATAQUE_ESP": 48,
+    "DEFENSA_ESP": 84,
+    "VELOCIDAD": 23
+    
+    }
+
+
+pokemon1.iv = {
+    "vida": 24,
+    "ATAQUE": 12,
+    "DEFENSA": 30,
+    "ATAQUE_ESP": 16,
+    "DEFENSA_ESP": 23,
+    "VELOCIDAD": 5
+    
+
+    }
+
+
+pokemon1.calcular_estadisticas()
+
+print(pokemon1.estadisticas)
+
+
+pokemon2.estadisticasbase = {
+    "vida": 39,
+    "ATAQUE": 52,
+    "DEFENSA": 43,
+    "ATAQUE_ESP": 80,
+    "DEFENSA_ESP": 65,
+    "VELOCIDAD": 65
+}
+
+pokemon2.ev = {
+    "vida": 0,
+    "ATAQUE": 0,
+    "DEFENSA": 0,
+    "ATAQUE_ESP": 0,
+    "DEFENSA_ESP": 0,
+    "VELOCIDAD": 0
+    
+    }
+
+pokemon2.iv = {
+    "vida": 24,
+    "ATAQUE": 12,
+    "DEFENSA": 30,
+    "ATAQUE_ESP": 16,
+    "DEFENSA_ESP": 23,
+    "VELOCIDAD": 5
+    
+
+    }
+pokemon2.calcular_estadisticas()
+print()
+print(pokemon2.estadisticas)
+
+
+pelea = batalla(pokemon1,pokemon2)
+
+##while not pelea.batalla_terminada():
+##    print()
+##    
+##
+##   
+##    
+##    pelea.golpear(pokemon1,pokemon2)
+##    
+##    pelea.estado()
+
+
+
+
+        
+class barras():
+    def __init(self):
+        pass
+
+    def mostrar(self):
+        total = pokemon1.vida
+       
+
+        total2 = pokemon2.vida
+        corriente2 = pokemon2.vida
+        barra_ususario = image.load("C:/Users/Usuario/Desktop/imagenes/barra_vida_usuario.png")
+        barra_enemigo = image.load("C:/Users/Usuario/Desktop/imagenes/barra_vida_enemigo.png")
+        barra_usuario = transform.scale(barra_ususario,(70*5,70))
+        barra_enemigo = transform.scale(barra_enemigo,(70*5,70))
+
+        nombre = myfont.render(pokemon1.nombre,True,(0,0,0))
+        nivel = myfont.render("Lv:"+str(pokemon1.nivel),True,(0,0,0))
+        nombre_ene = myfont.render(pokemon2.nombre,True,(0,0,0))
+        nivel_ene = myfont.render("Lv:"+str(pokemon2.nivel),True,(0,0,0))
+        vida = myfont.render(str(total)+"/"+str(pokemon1.corriente),True,(0,0,0))
+        vida_ene = myfont.render(str(total2)+"/"+str(pokemon2.corriente),True,(0,0,0))
+
+        screen.blit(nombre,(430,220))
+        screen.blit(nivel,(700,220))
+        screen.blit(vida,(550,280))
+        screen.blit(vida_ene,(260,73))
+
+        screen.blit(nombre_ene,(100,10))
+        screen.blit(nivel_ene,(400,10))
+        
+        screen.blit(barra_usuario,(400,250))
+        screen.blit(barra_enemigo,(100,35))
+
+        pregunta = myfont.render("Que deberia hacer "+pokemon1.nombre+"?",True,(0,0,0))
+        
+
+        if pokemon2.vida <=0 or pokemon2.vida <=0:
+            pregunta = myfont.render("ganó "+pokemon1.nombre,True,(0,0,0))
+           
+          
+
+        elif pokemon1.vida <=0:
+             pregunta = myfont.render("ganó "+pokemon2.nombre,True,(0,0,0))
+             
+                    
+
+##        barra_vida = Rect(210,40,calculo,20)
+##        draw.rect(screen,(0,250,0),calculo)
+##        
+##        barra_vida_1 = Rect(510,248,200,15)
+##        draw.rect(screen,(0,250,0),barra_vida_1,0)
+            
+            
+        screen.blit(pregunta,(50,480))
+
+       
+
+    def render(self):
+        total = pokemon1.vida
+        corriente = pokemon1.vida
+        total2 = pokemon2.vida
+        corriente2 = pokemon2.vida
+        self.renderhpbar(210,total2,corriente2,(210,40))
+        self.renderhpbar(200,total,corriente,(510,248))
+
+
+        
+barra_usu = barras()
+vida = pokemon2.vida
+vida2 = pokemon1.vida
+def barra(screen,x,y,hp):
+    
+    largo = 200
+    ancho = 20
+    calculo = int((pokemon2.vida/vida) * largo)
+    borde = Rect(x,y,largo,ancho)
+    rectangulo = Rect(x,y,calculo,ancho)
+    draw.rect(screen,(0,0,0),borde,1)
+    draw.rect(screen,(0,255,0),rectangulo)
+
+
+def barra2(screen,x,y,hp):
+    largo = 200
+    ancho = 20
+    calculo2 = int((pokemon1.vida/vida2) * largo)
+    borde2 = Rect(x,y,largo,ancho)
+    rectangulo2 = Rect(x,y,calculo2,ancho)
+    draw.rect(screen,(0,0,0),borde2,1)
+    draw.rect(screen,(0,255,0),rectangulo2)
+
+
+    if calculo2 <=  25:
+        draw.rect(screen,(0,0,0),borde2,1)
+        draw.rect(screen,(255,0,0),rectangulo2)
+        
+
+fondo = image.load("C:/Users/Usuario/Desktop/imagenes/battle_bg_1.png")
+fondo = transform.scale(fondo,(210*4,400))
+
+imagen1 = image.load("/Users/Usuario/Desktop/imagenes/articuno_back.png")
+imagen1 = transform.scale(imagen1,(300,300))
+imagen2= image.load("/Users/Usuario/Desktop/imagenes/abra.png")
+imagen2 = transform.scale(imagen2,(350,300))
+
+init()
+screen = display.set_mode((800,600))
+
+
+myfont  = font.Font("font.ttf",15)
+
+
+aceptar = Rect(500,420,100,50)
+mochila = Rect (650,420,100,50)
+pokemon = Rect(500,500,100,50)
+salir = Rect(650,500,100,50)
+volver = Rect(650,550,100,50)
+
+usar = Rect(500,420,100,50)
+
+menu_mochila = False
+consultar = True
+while consultar:
+    media.play()
+    screen.fill((255,255,255))
+    for e in event.get():
+        if e.type == QUIT:
+            sys.exit()
+        if e.type == MOUSEBUTTONDOWN and e.button ==1:
+            if aceptar.collidepoint(mouse.get_pos()):
+                 print("click")
+                 pelea.golpear(pokemon1,pokemon2)
+                 pelea.estado()
+                 
+    
+                
+
+
+            if  e.type == MOUSEBUTTONDOWN and e.button ==1:
+             if mochila.collidepoint(mouse.get_pos()):
+                 print ("mochila")
+                 consultar = False
+                 menu_mochila = True
+                 while menu_mochila :
+                      for e in event.get():
+                        if e.type == QUIT:
+                            sys.exit()
+                            screen.fill((255,255,255))
+                      titulo =  myfont.render("inventario",1,(40,40,40))
+                      screen.blit(titulo,(330,50))
+                      draw.line(screen,(215,215,215),(0,80),(800,80))
+
+                      pokeball= image.load("C:/Users/Usuario/Desktop/batalla/Parkball2.png")
+                      pokeball = transform.scale(pokeball,(100,100))
+                      screen.blit(pokeball,(100,110))
+                      
+                      nombre=  myfont.render("Poke ball",1,(40,40,40))
+                      screen.blit(nombre,(250,120))
+                      
+                      descripcion = myfont.render("dispositivo con diseño capsular que ",1,(215,215,215))
+                      screen.blit(descripcion,(250,150))
+                      
+                      descripcion1 = myfont.render("captura pokemons salvajes",1,(215,215,215))
+                      screen.blit(descripcion1,(250,170))
+                      
+                      pokeball2= image.load("C:/Users/Usuario/Desktop/batalla/pok.png")
+                      pokeball2 = transform.scale(pokeball2,(100,100))
+                      screen.blit(pokeball2,(100,240))
+                      
+                      nombre2 =  myfont.render("Malla ball",1,(40,40,40))
+                      screen.blit(nombre2,(250,250))
+
+                      descripcion2 = myfont.render("poke ball de alto rendimiento  ",1,(215,215,215))
+                      screen.blit(descripcion2,(250,280))
+                      
+                      descripcion3 = myfont.render("mayor efizacia al de la Poke ball  ",1,(215,215,215))
+                      screen.blit(descripcion3,(250,300))
+
+
+
+                      if e.type == MOUSEBUTTONDOWN and e.button ==1:
+                           if volver.collidepoint(mouse.get_pos()):
+                               menu_mochila = False
+                               consultar =  True
+                               print("salir")
+
+
+                      if volver.collidepoint(mouse.get_pos()):
+                            draw.rect(screen,(0,0,0),volver,3)
+
+
+                      
+
+
+                      texto = myfont.render("volver",True,(0,0,0))
+                      screen.blit(texto,(650+(aceptar.width-texto.get_width())/2,
+                      550+(aceptar.height-texto.get_height())/2))
+
+                      
+
+                      display.update()
+
+
+
+            if   e.type == MOUSEBUTTONDOWN and e.button ==1:
+             if pokemon.collidepoint(mouse.get_pos()):
+                 print ("pokemons")
+
+
+
+            if   e.type == MOUSEBUTTONDOWN and e.button ==1:
+             if salir.collidepoint(mouse.get_pos()):
+                 print ("salir")
+                 consultar = False
+                 display.quit()
+                
+                 exit()
+    
+        
+    
+    screen.blit(fondo, (-2, 1))
+    
+    
+            
+    if aceptar.collidepoint(mouse.get_pos()):
+            draw.rect(screen,(0,0,0),aceptar,3)
+            
+            
+
+    elif mochila.collidepoint(mouse.get_pos()):
+         draw.rect(screen,(0,0,0),mochila,3)
+
+
+
+    elif pokemon.collidepoint(mouse.get_pos()):
+         draw.rect(screen,(0,0,0),pokemon,3)
+
+
+
+    elif salir.collidepoint(mouse.get_pos()):
+         draw.rect(screen,(0,0,0),salir,3)
+
+
+   
+
+
+    texto = myfont.render("ataque",True,(0,0,0))
+    screen.blit(texto,(500+(aceptar.width-texto.get_width())/2,
+                           420+(aceptar.height-texto.get_height())/2))        
+
+
+    texto = myfont.render("mochila",True,(0,0,0))
+    screen.blit(texto,(650+(aceptar.width-texto.get_width())/2,
+                           420+(aceptar.height-texto.get_height())/2))
+
+
+    texto = myfont.render("pokemon",True,(0,0,0))
+    screen.blit(texto,(500+(aceptar.width-texto.get_width())/2,
+                           500+(aceptar.height-texto.get_height())/2))
+
+
+
+    texto = myfont.render("salir",True,(0,0,0))
+    screen.blit(texto,(650+(aceptar.width-texto.get_width())/2,
+                           500+(aceptar.height-texto.get_height())/2))
+
+
+
+
+
+    
+    screen.blit(imagen1,(50,120))
+    screen.blit(imagen2,(500,-50))
+    barra_usu.mostrar()
+    barra(screen,210,40,pokemon2.vida)
+    barra2(screen,510,243,pokemon1.vida)
+    
+    texto = myfont.render("ataque",True,(0,0,0))
+   
+    display.flip()
+           
